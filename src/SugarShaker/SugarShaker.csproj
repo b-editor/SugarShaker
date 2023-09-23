@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!-- 以下は任意です。 -->
+    <!--<RepositoryUrl>url/to/repository</RepositoryUrl>-->
+    <PackageId>SugarShaker</PackageId>
+    <Title>Sugar Shaker</Title>
+    <Description>
+      キーフレームを使わずに、フェードインアウトなどのアニメーション効果を付けられるようにします。
+    </Description>
+    <PackageTags>effect animation source-operator filter</PackageTags>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <Authors>indigo-san</Authors>
+  </PropertyGroup>
+
+  <!-- ビルドしたときに、サイドロード拡張機能として認識されるようにする。 -->
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <OutputPath>$([System.Environment]::GetFolderPath(SpecialFolder.UserProfile))\.beutl\sideloads\$(AssemblyName)</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Beutl.Sdk" Version="1.0.0-preview.3" />
+  </ItemGroup>
+
+</Project>
