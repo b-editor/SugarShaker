@@ -7,12 +7,8 @@ Beutlをより簡単に使うための拡張機能です。
 例えばキーフレームを使わずに、
 フェードインアウトなどのアニメーション効果を付けられるようにします。
 
-<details>
-    <summary>フェードインアウト</summary>
-    <img src="https://github.com/indigo-san/SugarShaker/assets/66758394/37d2eef6-8931-4aa5-af73-8e7f74e30da5">
-</details>
+**フェードインアウト**
+![sugar-shaker-fade](https://github.com/indigo-san/SugarShaker/assets/66758394/eac847f1-9c17-4ab6-bb5a-cfc7ddd8e695)
 
-<details>
-    <summary>ワイプ</summary>
-    <img src="https://github.com/indigo-san/SugarShaker/assets/66758394/9bc3537e-fd93-47b1-82db-6f7986f93f00">
-</details>
+**ワイプ**
+![sugar-shaker-wipe](https://github.com/indigo-san/SugarShaker/assets/66758394/ab8510bc-b03d-44ee-a71f-0a13209826d7)
