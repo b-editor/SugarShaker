@@ -64,7 +64,7 @@ public sealed class WipeEffect : TransitionEffect
         if (InTime != 0 && _currentTime < InTime)
         {
             double inProgress = _currentTime / InTime;
-            context.Custom((InvertIn ? 1 - inProgress : inProgress, Blur, InvertIn), ApplyCore, (_, r) => r);
+            context.CustomEffect((InvertIn ? 1 - inProgress : inProgress, Blur, InvertIn), ApplyCore, (_, r) => r);
         }
         else if (OutTime != 0)
         {
@@ -73,50 +73,55 @@ public sealed class WipeEffect : TransitionEffect
             if (lastTime < OutTime)
             {
                 double outProgress = lastTime / OutTime;
-                context.Custom((InvertOut ? 1 - outProgress : outProgress, Blur, InvertOut), ApplyCore, (_, r) => r);
+                context.CustomEffect((InvertOut ? 1 - outProgress : outProgress, Blur, InvertOut), ApplyCore, (_, r) => r);
             }
         }
     }
 
-    private void ApplyCore((double Progress, float Blur, bool Invert) data, FilterEffectCustomOperationContext context)
+    private void ApplyCore((double Progress, float Blur, bool Invert) data, CustomFilterEffectContext context)
     {
-        if (context.Target.Surface?.Value is SKSurface surface)
+        for (int i = 0; i < context.Targets.Count; i++)
         {
-            Size size = context.Target.Size;
-            Rect rect = new(size);
-            using EffectTarget newTarget = context.CreateTarget((int)size.Width, (int)size.Height);
-
-            float length = MathF.Sqrt(MathF.Pow(size.Width, 2) + MathF.Pow(size.Height, 2)) * (float)data.Progress;
-            if (!MathUtilities.AreClose(length, 0))
+            EffectTarget target = context.Targets[i];
+            if (target.Surface?.Value is SKSurface surface)
             {
-                using (ImmediateCanvas canvas = context.Open(newTarget))
+                Size size = target.Bounds.Size;
+                Rect rect = new(size);
+                EffectTarget newTarget = context.CreateTarget(new Rect(0, 0, size.Width, size.Height));
+
+                float length = MathF.Sqrt(MathF.Pow(size.Width, 2) + MathF.Pow(size.Height, 2)) * (float)data.Progress;
+                if (!MathUtilities.AreClose(length, 0))
                 {
-                    float maskCanvasSize = length + (data.Blur * 3);
-                    using EffectTarget maskShape = context.CreateTarget((int)maskCanvasSize, (int)maskCanvasSize);
-                    using (var paint = new SKPaint())
+                    using (ImmediateCanvas canvas = context.Open(newTarget))
                     {
-                        if (data.Blur != 0)
+                        float maskCanvasSize = length + (data.Blur * 3);
+                        using EffectTarget maskShape = context.CreateTarget(new Rect(0, 0, maskCanvasSize, maskCanvasSize));
+                        using (var paint = new SKPaint())
                         {
-                            paint.ImageFilter = SKImageFilter.CreateBlur(data.Blur, data.Blur);
+                            if (data.Blur != 0)
+                            {
+                                paint.ImageFilter = SKImageFilter.CreateBlur(data.Blur, data.Blur);
+                            }
+
+                            paint.Color = SKColors.White;
+                            maskShape.Surface!.Value!.Canvas.DrawCircle(maskCanvasSize / 2, maskCanvasSize / 2, length / 2, paint);
                         }
 
-                        paint.Color = SKColors.White;
-                        maskShape.Surface!.Value!.Canvas.DrawCircle(maskCanvasSize / 2, maskCanvasSize / 2, length / 2, paint);
-                    }
+                        using SKImage skImage = maskShape.Surface.Value!.Snapshot();
+                        using var bitmapRef = Ref<IBitmap>.Create(skImage.ToBitmap());
+                        using var bmpSource = new BitmapSource(bitmapRef, "Tmp");
+                        var brush = new ImmutableImageBrush(bmpSource, stretch: Stretch.None);
 
-                    using SKImage skImage = maskShape.Surface.Value!.Snapshot();
-                    using var bitmapRef = Ref<IBitmap>.Create(skImage.ToBitmap());
-                    using var bmpSource = new BitmapSource(bitmapRef, "Tmp");
-                    var brush = new ImmutableImageBrush(bmpSource, stretch: Stretch.None);
-
-                    using (canvas.PushOpacityMask(brush, rect, data.Invert))
-                    {
-                        canvas.DrawSurface(surface, default);
+                        using (canvas.PushOpacityMask(brush, rect, data.Invert))
+                        {
+                            canvas.DrawSurface(surface, default);
+                        }
                     }
                 }
-            }
 
-            context.ReplaceTarget(newTarget);
+                target.Dispose();
+                context.Targets[i] = newTarget;
+            }
         }
     }
 

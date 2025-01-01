@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -12,9 +12,9 @@
       キーフレームを使わずに、フェードインアウトなどのアニメーション効果を付けられるようにします。
     </Description>
     <PackageTags>effect animation source-operator filter</PackageTags>
-    <Version>1.0.0</Version>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <Authors>indigo-san</Authors>
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <Authors>yuto-trd</Authors>
   </PropertyGroup>
 
   <!-- ビルドしたときに、サイドロード拡張機能として認識されるようにする。 -->
@@ -26,7 +26,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Beutl.Sdk" Version="1.0.0-preview.3" />
+    <PackageReference Include="Beutl.Extensibility" Version="1.0.0-preview.10" />
+    <PackageReference Include="Beutl.ProjectSystem" Version="1.0.0-preview.10" />
+    <PackageReference Include="Beutl.Operators" Version="1.0.0-preview.10" />
   </ItemGroup>
 
 </Project>

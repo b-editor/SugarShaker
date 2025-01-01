@@ -1,7 +1,6 @@
 ﻿using Beutl.Extensibility;
 using Beutl.Services;
 using SugarShaker.Effects;
-using SugarShaker.Operators;
 
 namespace SugarShaker;
 
@@ -21,15 +20,12 @@ public sealed class SugarShakerExtension : Extension
             group => group.AddMultiple(
                 "フェードインアウト",
                 item => item.Bind<FadeInOutEffect>(KnownLibraryItemFormats.FilterEffect)
-                    .Bind<FadeInOutEffectOperator>(KnownLibraryItemFormats.SourceOperator)
             ).AddMultiple(
                 "ワイプ",
                 item => item.Bind<WipeEffect>(KnownLibraryItemFormats.FilterEffect)
-                    .Bind<WipeEffectOperator>(KnownLibraryItemFormats.SourceOperator)
             ).AddMultiple(
                 "透明度にする",
                 item => item.Bind<MakeTransparent>(KnownLibraryItemFormats.FilterEffect)
-                    .Bind<MakeTransparentOperator>(KnownLibraryItemFormats.SourceOperator)
             )
         );
     }

@@ -5,14 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SugarShaker", "src\SugarShaker\SugarShaker.csproj", "{8C689EF9-26CA-441E-86A6-389223AB4D05}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{09023306-282F-457A-9756-C60D70CB6EB4}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{F770D8A3-237F-4E47-A257-35712794FECC}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		nuget.config = nuget.config
 	EndProjectSection
 EndProject
 Global
